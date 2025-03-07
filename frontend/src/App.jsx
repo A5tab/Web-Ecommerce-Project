@@ -19,38 +19,8 @@ const ProductsProviderWrapper = () => {
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Layout />,
+    element: <PersistLogin />,
     children: [
-      {
-        element: <ProductsProviderWrapper />,
-        children: [
-          {
-            path: "/",
-            element: <Home />,
-          },
-          {
-            path: "/home",
-            element: <Home />,
-          },
-          {
-            path: "/about",
-            element: <About />,
-          },
-          {
-            path: "/contact",
-            element: <Contact />,
-          },
-          {
-            path: "/category/:categoryName",
-            element: <CategoryPage />,
-          },
-          {
-            path: "/product/:productId",
-            element: <ProductPage />,
-          },
-        ]
-      },
       {
         path: "/signup",
         element: <Protected authentication={false}>
@@ -59,21 +29,54 @@ const router = createBrowserRouter([
       },
       {
         path: "/login",
-        element: <Protected authentication={false} allowedRoles={['guest']}>
+        element: <Protected authentication={false}>
           <Login />
         </Protected>,
       },
       {
-        path: "/unauthorized",
-        element: <Unauthorized />
-      },
-      {
-        path: '*',
-        element: <NotFound />
-      },
-      {
-        element: <PersistLogin />,
+        path: "/",
+        element: <Layout />,
         children: [
+          {
+            element: <ProductsProviderWrapper />,
+            children: [
+              {
+                path: "/",
+                element: <Home />,
+              },
+              {
+                path: "/home",
+                element: <Home />,
+              },
+              {
+                path: "/about",
+                element: <About />,
+              },
+              {
+                path: "/contact",
+                element: <Contact />,
+              },
+              {
+                path: "/category/:categoryName",
+                element: <CategoryPage />,
+              },
+              {
+                path: "/product/:productId",
+                element: <ProductPage />,
+              },
+            ]
+          },
+          {
+            path: "/unauthorized",
+            element: <Unauthorized />
+          },
+          {
+            path: '*',
+            element: <NotFound />
+          },
+          // {
+          // element: <PersistLogin />,
+          // children: [
           {
             path: "/admin",
             element:
@@ -95,11 +98,13 @@ const router = createBrowserRouter([
               <h1>Orders Page is auth protected</h1>
             </Protected>
           },
+          // ]
+          // }
+
         ]
       }
     ]
-  },
-
+  }
 ]);
 
 function App() {

@@ -129,7 +129,6 @@ function ProductsTable() {
                 <FormModel handleFormModel={handleCloseEditModel} product={selectedProduct} />
             ) : (
                 <div>
-                    <button onClick={() => refresh()} className='bg-slate-500 rounded-md cursor-pointer p-2 text-white'>Click to ref token</button>
                     <table className="min-w-full bg-white rounded-lg shadow">
                         <thead>
                             <tr className="bg-gray-200">

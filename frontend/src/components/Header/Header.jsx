@@ -16,6 +16,7 @@ const Header = () => {
     const cartProducts = useSelector(state => state.cart.cartProducts)
     const cartTabClicked = useSelector(state => state.cart.cartTabClicked)
     const [totalCartProducts, setTotalCartProducts] = useState(0)
+    const auth = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
     const handleCartTab = () => {

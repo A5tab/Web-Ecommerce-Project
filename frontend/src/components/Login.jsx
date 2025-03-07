@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input } from "../components/formscomponents/index"
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, replace, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../features/auth/authSlice.js'
 import axios from '../api/axios.js';
@@ -13,11 +13,11 @@ function LoginPage() {
     const { register, handleSubmit, formState: { errors, isSubmitting }, clearErrors } = useForm({ mode: "onBlur" });
     const [apiError, setApiError] = useState('')
     const location = useLocation();
-    const from = location.state?.from?.pathname || '/'
+    const from = location.state?.from?.pathname || '/';
     useEffect(() => {
         if (isLoggedIn) {
             navigate(from, { replace: true })
-            
+
         }
     }, [isLoggedIn, userRole, navigate]);
     const onSubmit = async (data) => {
@@ -35,17 +35,13 @@ function LoginPage() {
                 const user = response.data.data.user;
                 const userRole = user?.role;
                 const accessToken = response.data.data.accessToken;
-                console.log("respnse", response);
-                console.log("user", user);
-                console.log("respnse");
-                
+
                 dispatch(login({
                     userData: user,
-                    userRole: userRole, 
+                    userRole: userRole,
                     accessToken: accessToken
                 }));
-                console.log(user, userRole, "at" + accessToken);
-                
+                { userRole === 'admin' ? navigate('/admin', { replace: true }) : navigate(from, { replace: true }) }
             }
         } catch (err) {
             if (err.response?.data) {

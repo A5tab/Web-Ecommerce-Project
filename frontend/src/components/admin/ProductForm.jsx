@@ -12,9 +12,6 @@ function ProductForm({ handleFormModel, product }) {
     const axiosPrivate = useAxiosPrivate();
     const { state, dispatch } = useAdminProducts();
 
-    const navigate = useNavigate();
-    const location = useLocation();
-    const logoutUser = useLogout();
     if (state.loading) return <p className="text-gray-500 font-bold">Loading...</p>;
     if (state.error) return <p className="text-red-500">{state.error}</p>;
 
@@ -41,11 +38,6 @@ function ProductForm({ handleFormModel, product }) {
             }
 
         } catch (error) {
-            // if (error.response && error.response.status === 401) {
-            //     console.warn("Unauthorized access detected. Logging out...");
-            //     logoutUser();
-            //     navigate('/login', { state: { from: location }, replace: true })
-            // }
             toast.error(`Error while ${product ? "updating" : "adding"} product: ${error.message}`);
         }
         finally {
@@ -57,7 +49,6 @@ function ProductForm({ handleFormModel, product }) {
         handleSubmit,
         control,
         formState: { errors },
-        trigger,
         setValue,
         clearErrors,
         isSubmitting,

@@ -1,7 +1,6 @@
-import { useNavigate, useLocation, replace } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-
 
 export default function Protected({ children, authentication = true, allowedRoles = [] }) {
     const navigate = useNavigate();
@@ -13,13 +12,13 @@ export default function Protected({ children, authentication = true, allowedRole
         const isAllowed = allowedRoles.length === 0 || allowedRoles.includes(userRole);
 
         if (authentication && isLoggedIn !== authentication) {
-            navigate('/login', { state: { from: location } }, replace);
+            navigate('/login', { state: { from: location }, replace: true });
         }
         else if (!authentication && isLoggedIn !== authentication) {
-            navigate('/');
+            navigate('/', { replace: true });
         }
         else if (authentication && !isAllowed) {
-            navigate('/unauthorized', { state: { from: location } }, replace);
+            navigate('/unauthorized', { state: { from: location }, replace: true });
         }
 
         setLoading(false);
