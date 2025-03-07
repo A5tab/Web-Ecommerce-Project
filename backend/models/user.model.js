@@ -9,11 +9,6 @@ const userSchema = new mongoose.Schema(
             unique: true,
             index: true
         },
-        fullName: {
-            type: String,
-            required: [true, 'Full Name is required'],
-            trim: true
-        },
         email: {
             type: String,
             required: [true, 'Email is required'],
@@ -32,7 +27,7 @@ const userSchema = new mongoose.Schema(
         },
         role: {
             type: String,
-            enum: ['user', 'admin'], // only from these two
+            enum: ['user', 'admin'], // only from these three
             default: 'user',
         },
         cart: [
@@ -51,18 +46,14 @@ const userSchema = new mongoose.Schema(
         refreshToken: {
             type: String
         },
-        createdAt: {
-            type: Date,
-            default: Date.now,
-        },
-        updatedAt: {
-            type: Date,
-            default: Date.now,
-        },
     },
     {
         timestamps: true,
     }
 );
+
+userSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) next();
+});
 
 export default mongoose.model('User', userSchema);

@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import CartIcon from '../CartIcon';
+import { useDispatch, useSelector } from 'react-redux';
+import CartDetails from '../CartDetails';
+import { cartTabHandler } from '../../features/cart/cartSlice'
 const Header = () => {
     const [activeLink, setActiveLink] = useState('Home');
     const navLinks = [
@@ -9,6 +13,17 @@ const Header = () => {
         // 'Products',
         'Contact',
     ]
+    const cartProducts = useSelector(state => state.cart.cartProducts)
+    const cartTabClicked = useSelector(state => state.cart.cartTabClicked)
+    const [totalCartProducts, setTotalCartProducts] = useState(0)
+    const dispatch = useDispatch();
+
+    const handleCartTab = () => {
+        dispatch(cartTabHandler(cartTabClicked));
+    }
+    useEffect(() => {
+        setTotalCartProducts(cartProducts.reduce((acc, product) => acc + product.quantity, 0));
+    }, [cartProducts])
     return (
         <header className="bg-gray-800 text-white shadow-lg">
             <div className="container mx-auto px-4 py-3 flex justify-between items-center">
@@ -30,15 +45,15 @@ const Header = () => {
 
                     ))}
                 </nav>
-                {/* Call to Action */}
-                <div className="hidden md:block">
-                    <a
-                        href="#get-started"
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition"
-                    >
-                        Get Started
-                    </a>
+                <div className="relative cursor-pointe">
+                    <div className="relative w-10 h-10 flex items-center justify-center" onClick={handleCartTab}>
+                        <CartIcon className="text-gray-700 w-7 h-7" />
+                        <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-semibold w-5 h-5 flex items-center justify-center rounded-full shadow-md">
+                            {totalCartProducts}
+                        </span>
+                    </div>
                 </div>
+
                 {/* Mobile Menu Button */}
                 <button
                     className="md:hidden text-gray-300 focus:outline-none"

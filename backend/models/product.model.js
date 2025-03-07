@@ -47,10 +47,6 @@ const productSchema = new mongoose.Schema(
             required: [true, 'Stock quantity is required'],
             min: [0, 'Stock must be greater than or equal to 0'],
         },
-        quantity: {
-            type: Number,
-            min: [0, 'Stock must be greater than or equal to 0'],
-        },
         category: {
             type: String,
             required: [true, 'Product category is required'],

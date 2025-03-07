@@ -1,4 +1,4 @@
-import Form from "./Form";
+import ProductForm from "./ProductForm";
 
 function FormModel({ handleFormModel, product = null }) {
     const isUpdate = product !== null; // if product is not null, it means we are updating an existing product
@@ -9,7 +9,7 @@ function FormModel({ handleFormModel, product = null }) {
                 <h2 className="text-2xl font-semibold text-gray-800 mb-2 text-center">
                     {isUpdate ? "Update Product" : "Add New Product"}
                 </h2>
-                <Form handleFormModel={handleFormModel} product={product} />
+                <ProductForm handleFormModel={handleFormModel} product={product} />
             </div>
         </div>
     );

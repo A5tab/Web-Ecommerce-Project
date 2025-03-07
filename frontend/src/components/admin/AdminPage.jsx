@@ -3,7 +3,9 @@ import AdminDashboard from './AdminDashboard'
 
 function AdminPage() {
   return (
-    <AdminDashboard />
+    <div>
+      <AdminDashboard />
+    </div>
   )
 }
 

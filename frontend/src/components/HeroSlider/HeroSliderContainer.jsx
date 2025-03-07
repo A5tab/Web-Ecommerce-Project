@@ -28,7 +28,7 @@ function HeroSliderContainer() {
     setCurrentSlide((prevSlide) => (prevSlide === heroSlides.length - 1 ? 0 : prevSlide + 1));
   }
   return (
-    <div className='relative overflow-hidden max-w-full mx-4 my-2 h-96'>
+    <div className='relative overflow-hidden max-w-full h-96'>
       <HeroSlide heroSlides={heroSlides} currentSlide={currentSlide}></HeroSlide>
 
       {/* <button onClick={handlePrev} className='absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-800 text-white'>

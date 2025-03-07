@@ -1,4 +1,4 @@
-import React from "react";
+import { Link } from "react-router-dom";
 
 function About() {
   return (
@@ -45,9 +45,9 @@ function About() {
       <div className="mt-16">
         <p className="text-center text-lg text-gray-300">
           Want to learn more about what we do?{" "}
-          <a href="#" className="text-blue-400 hover:text-blue-500 underline">
+          <Link to="/contact" className="text-blue-400 hover:text-blue-500 underline">
             Contact us today
-          </a>
+          </Link>
           .
         </p>
       </div>
@@ -56,3 +56,4 @@ function About() {
 }
 
 export default About;
+

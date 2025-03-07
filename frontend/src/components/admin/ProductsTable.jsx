@@ -1,13 +1,81 @@
-import React, { useContext, useState } from 'react';
-import { ProductsContext } from '../../context/ProductsProvider';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import FormModel from './FormModel';
-
+import { toast, ToastContainer } from 'react-toastify';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { useAdminProducts } from '../../context/AdminProductsProvider';
+import useRefreshTokens from '../../hooks/useRefreshTokens';
 function ProductsTable() {
-    const { products, setProducts } = useContext(ProductsContext);
+    const { state, dispatch } = useAdminProducts();
+    const axiosPrivate = useAxiosPrivate();
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [editModel, setEditModel] = useState(false);
+
+    const refresh = useRefreshTokens();
+    useEffect(() => {
+        // const fetchProducts = async () => {
+        //     try {
+        //         const response = await axiosPrivate.get('/product/get-all-products');
+        //         if (response.status === 200) {
+        //             dispatch({ type: 'SET_PRODUCTS', payload: response.data.data });
+        //         }
+        //     } catch (error) {
+        //         console.log(error);
+        //         dispatch({ type: 'SET_ERROR', payload: error });
+        //         navigate('/login', { state: { from: location }, replace: true })
+        //     }
+        // }
+
+        fetchProducts();
+    }, [])
+
+    const fetchProducts = async () => {
+        try {
+            const response = await axiosPrivate.get('/product/get-all-products');
+            if (response.status === 200) {
+                dispatch({ type: 'SET_PRODUCTS', payload: response.data.data });
+            }
+        } catch (error) {
+            console.log(error);
+            dispatch({ type: 'SET_ERROR', payload: error });
+        }
+    }
+
+    // useEffect(() => {
+    //     let isMounted = true;
+    //     const controller = new AbortController();
+
+    //     const getProducts = async () => {
+    //         try {
+    //             const response = await axios.get('/product/get-all-products', {
+    //                 signal: controller.signal,
+    //             });
+
+    //             if (response.status === 200) {
+    //                 console.log("Products fetched:", response.data); // ✅ Check API response
+
+    //                 if (isMounted) {
+    //                     dispatch({ type: "SET_PRODUCTS", payload: response.data.data });
+    //                 }
+    //             }
+    //         } catch (err) {
+    //             console.error("Error fetching products:", err);
+
+    //             // Check if navigation is blocking logs
+    //             console.log("Navigating to login...");
+    //             navigate('/login', { state: { from: location }, replace: true });
+    //         }
+    //     };
+
+    //     getProducts();
+
+    //     return () => {
+    //         console.log("Cleanup running..."); // ✅ See if cleanup runs
+    //         isMounted = false;
+    //         controller.abort();
+    //     };
+    // }, []);
+
 
     // Toggle edit model
     const handleEditModel = (product) => {
@@ -24,19 +92,17 @@ function ProductsTable() {
     // Handle delete confirmation
     const handleConfirmDelete = async () => {
         if (!selectedProduct) return;
-
         try {
-            await axios.delete(`http://localhost:3000/api/v1/product/delete-products/${selectedProduct._id}`);
-            setProducts((prevProducts) =>
-                prevProducts.filter((product) => product._id !== selectedProduct._id)
-            );
-            alert("Product deleted successfully.");
+            const response = await axiosPrivate.delete(`/product/delete-products/${selectedProduct._id}`);
+            dispatch({ type: "DELETE_PRODUCT", payload: selectedProduct._id });
+            toast.success("Product deleted successfully!");
         } catch (error) {
-            console.error("Error deleting product:", error);
-            alert("Failed to delete the product. Please try again.");
+            dispatch({ type: "SET_ERROR", payload: "Error deleting product" });
+            toast.warn("Error deleting product. Please try again later.");
         } finally {
             setShowDeleteModal(false);
             setSelectedProduct(null);
+            dispatch({ type: "SET_ERROR", payload: null });
         }
     };
 
@@ -52,6 +118,10 @@ function ProductsTable() {
         setSelectedProduct(null);
     };
 
+
+
+    if (state.loading) return <p className="text-gray-500 font-bold">Loading...</p>;
+    if (state.error) return <p className="text-red-500">{state.error}</p>;
     return (
         <div>
             {/* Display FormModel if editModel is true */}
@@ -59,6 +129,7 @@ function ProductsTable() {
                 <FormModel handleFormModel={handleCloseEditModel} product={selectedProduct} />
             ) : (
                 <div>
+                    <button onClick={() => refresh()} className='bg-slate-500 rounded-md cursor-pointer p-2 text-white'>Click to ref token</button>
                     <table className="min-w-full bg-white rounded-lg shadow">
                         <thead>
                             <tr className="bg-gray-200">
@@ -71,7 +142,7 @@ function ProductsTable() {
                             </tr>
                         </thead>
                         <tbody>
-                            {products.map((product) => (
+                            {state.products.map((product) => (
                                 <tr key={product._id}>
                                     <td className="py-2 px-4">{product?.title}</td>
                                     <td className="py-2 px-4">
@@ -128,6 +199,7 @@ function ProductsTable() {
                     )}
                 </div>
             )}
+            <ToastContainer />
         </div>
     );
 }

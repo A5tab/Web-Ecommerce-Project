@@ -23,7 +23,7 @@ const getSingleProduct = asyncHandler(async (req, res) => {
 const addProduct = asyncHandler(async (req, res) => {
     const { title, description, price, stock, features, category } = req.body;
 
-    if ([title, description, price, stock, features, category].some((field) => !field || field.trim() === "")) {
+    if ([title, description, price, stock, features, category].map((f) => { return String(f) }).some((field) => !field || field.trim() === "")) {
         throw new ApiError(400, "All fields are required");
     }
 
@@ -32,8 +32,8 @@ const addProduct = asyncHandler(async (req, res) => {
     }
 
     // Separate mainImage and additional images
-    const mainImageFile = req.files[0]; // First file as main image
-    const otherImageFiles = req.files.slice(1); // Rest as additional images
+    const mainImageFile = req.files.mainImage || req.files.mainImage[0]; // First file as main image
+    const otherImageFiles = req.files.images || req.files.images.slice(0); // Rest as additional images
 
     // Upload mainImage
     const mainImage = await uploadOnCloudinary(mainImageFile.path);
@@ -83,7 +83,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     const { title, description, price, stock, features, category } = req.body;
 
     // Validate required fields
-    if ([title, description, price, stock, features, category].some((field) => !field || field.trim() === "")) {
+    if ([title, description, price, stock, features, category].map((f) => { return String(f) }).some((field) => !field || field.trim() === "")) {
         throw new ApiError(400, "All fields are required");
     }
 
@@ -139,21 +139,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, deletedProduct, "Product deleted successfully"));
 });
 
-const addQuantity = asyncHandler(async (req, res) => {
-    const productId = req.params.id;
 
-    const quantity = req.body;
-    if (!productId) {
-        throw new ApiError(404, "Product not found");
-    }
-    const quantityAddedProduct = await Product.findByIdAndUpdate(productId, { quantity });
-
-    if (!quantityAddedProduct) {
-        throw new ApiError(404, "Product not updated");
-    }
-
-    res.status(200).json(new ApiResponse(200, quantityAddedProduct, "Product updated successfully"));
-});
 
 export {
     getAllProducts,
@@ -161,5 +147,4 @@ export {
     addProduct,
     updateProduct,
     deleteProduct,
-    addQuantity
 }

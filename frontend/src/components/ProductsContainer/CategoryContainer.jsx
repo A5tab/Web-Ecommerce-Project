@@ -1,17 +1,13 @@
-import React, { useContext } from "react";
-import { ProductsContext } from "../../context/ProductsProvider";
+import { useProducts } from "../../context/ProductsProvider";
 import { useNavigate, Link } from "react-router-dom";
-
 function CategoryContainer({ categoryName }) {
-    const { products } = useContext(ProductsContext);
+    const { state: { products } } = useProducts();
     const navigate = useNavigate();
 
-    // Filter products by category
     const filteredProducts = products.filter(
         (product) => product.category === categoryName
     );
 
-    // Limit the number of displayed products to 6 (two rows max)
     const displayedProducts = filteredProducts.slice(0, 6);
 
     const handleViewAll = () => {
@@ -45,7 +41,7 @@ function CategoryContainer({ categoryName }) {
                             <p className="text-sm text-gray-500 mt-2 truncate">
                                 {product.description}
                             </p>
-                            <p className="text-lg font-semibold text-blue-600 mt-4">
+                            <p className="text-lg font-bold text-green-600 mt-4">
                                 ${product.price}
                             </p>
                         </div>

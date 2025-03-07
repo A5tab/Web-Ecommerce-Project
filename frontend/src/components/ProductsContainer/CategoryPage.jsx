@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
-import { useParams, Link } from "react-router-dom";
-import { ProductsContext } from "../../context/ProductsProvider";
+import { Link, useParams } from "react-router-dom";
+import { useProducts } from "../../context/ProductsProvider";
+
 
 function CategoryPage() {
     const { categoryName } = useParams(); // Get the category name from URL
-    const { products } = useContext(ProductsContext);
+    const { state: { products}} = useProducts();
 
     // Filter products by category
     const filteredProducts = products.filter(
