@@ -1,7 +1,5 @@
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import { Admin, Home, About, Contact, Login, Signup, Unauthorized, NotFound } from "./pages/index.js";
-import CategoryPage from "./components/ProductsContainer/CategoryPage.jsx";
-import ProductPage from "./components/ProductsContainer/ProductPage.jsx";
+import { Admin, Home, About, Contact, Login, Signup, Unauthorized, NotFound, Product } from "./pages/index.js";
 import Layout from "./Layout.jsx";
 import Protected from "./components/AuthLayout.jsx";
 import PersistLogin from "./components/PersistLogin.jsx";
@@ -57,12 +55,8 @@ const router = createBrowserRouter([
                 element: <Contact />,
               },
               {
-                path: "/category/:categoryName",
-                element: <CategoryPage />,
-              },
-              {
                 path: "/product/:productId",
-                element: <ProductPage />,
+                element: <Product />,
               },
             ]
           },

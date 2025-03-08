@@ -11,6 +11,7 @@ const refreshTokenOptions = {
     httpOnly: true,
     secure: isProduction,
     sameSite: isProduction ? 'None' : 'Lax',
+    maxAge: 7 * 24 * 60 * 60
 };
 
 const isPasswordCorrect = async (enteredPassword, hashedPassword) => {

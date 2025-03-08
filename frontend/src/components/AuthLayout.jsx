@@ -15,7 +15,7 @@ export default function Protected({ children, authentication = true, allowedRole
             navigate('/login', { state: { from: location }, replace: true });
         }
         else if (!authentication && isLoggedIn !== authentication) {
-            navigate('/', { replace: true });
+            navigate(location.state?.from?.pathname || "/", { replace: true });
         }
         else if (authentication && !isAllowed) {
             navigate('/unauthorized', { state: { from: location }, replace: true });

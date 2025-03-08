@@ -16,13 +16,16 @@ function Layout() {
                     }`}
             >
                 {
-                    !isAdmin ? (
+                    isAdmin === '/admin' ? (
+                        <Outlet />
+                    ) : (
                         <div>
                             <Header />
                             <Outlet />
                             <Footer />
                         </div>
-                    ) : <Outlet />
+                    )
+
                 }
             </main>
 
