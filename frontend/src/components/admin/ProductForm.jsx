@@ -5,8 +5,7 @@ import { Input, Select, RTE, FileInput } from "../formscomponents"
 import { ToastContainer, toast } from "react-toastify";
 import { useAdminProducts } from "../../context/AdminProductsProvider";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { useLocation, useNavigate } from "react-router-dom";
-import useLogout from "../../hooks/useLogout";
+
 function ProductForm({ handleFormModel, product }) {
 
     const axiosPrivate = useAxiosPrivate();
@@ -52,6 +51,7 @@ function ProductForm({ handleFormModel, product }) {
         setValue,
         clearErrors,
         isSubmitting,
+        getValues,
     } = useForm({
         defaultValues: {
             title: product?.title || "",
@@ -112,6 +112,7 @@ function ProductForm({ handleFormModel, product }) {
                                     errorMessage={formField.errorMessage}
                                     name={formField.name}
                                     control={control}
+                                    defaultValue={getValues("description")}
                                 />
                             </div>
                         );

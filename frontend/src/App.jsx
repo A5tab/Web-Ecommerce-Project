@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import { Admin, Home, About, Contact, Login, Signup, Unauthorized, NotFound, Product } from "./pages/index.js";
+import { Admin, Home, About, Contact, Login, Signup, Unauthorized, NotFound, Product, Checkout } from "./pages/index.js";
 import Layout from "./Layout.jsx";
 import Protected from "./components/AuthLayout.jsx";
 import PersistLogin from "./components/PersistLogin.jsx";
@@ -83,13 +83,7 @@ const router = createBrowserRouter([
           {
             path: "/checkout",
             element: <Protected authentication allowedRoles={['user']}>
-              <h1>Checkout </h1>
-            </Protected>
-          },
-          {
-            path: "/orders",
-            element: <Protected authentication allowedRoles={['user']}>
-              <h1>Orders Page is auth protected</h1>
+              <Checkout />
             </Protected>
           },
           // ]

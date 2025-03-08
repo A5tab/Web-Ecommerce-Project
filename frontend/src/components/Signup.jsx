@@ -1,6 +1,6 @@
 import { Input, FileInput } from './formscomponents/index'
-import { Link, useNavigate } from 'react-router-dom'
-import { useForm, Controller, set } from 'react-hook-form'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useForm, Controller } from 'react-hook-form'
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { login } from '../features/auth/authSlice';
@@ -10,6 +10,8 @@ function SignupPage() {
   const navigate = useNavigate();
   const { register, formState: { errors, isSubmitting }, clearErrors, handleSubmit, control } = useForm({ mode: "onBlur" })
 
+  const location = useLocation();
+  const from = location?.state?.from.pathname || '/';
   const [apiError, setApiError] = useState('');
 
   const onSubmit = async (data) => {
@@ -36,6 +38,7 @@ function SignupPage() {
           userRole: userRole,
           accessToken: accessToken
         }));
+        navigate(from, { replace: true})
       }
     } catch (err) {
       if (err.response.data) {

@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { cartTabHandler, changeQuantity } from '../features/cart/cartSlice';
+import { Link } from 'react-router-dom';
 function CartDetails() {
   const dispatch = useDispatch();
   const cartTabClicked = useSelector(state => state.cart.cartTabClicked);
@@ -57,9 +58,11 @@ function CartDetails() {
               <span className="text-slate-300">Total</span>
               <span className="text-amber-400">${totalPrice}</span>
             </div>
-            <button className="w-full bg-amber-500 text-slate-900 py-2 mt-4 rounded-lg font-semibold hover:bg-amber-400 transition">
-              Checkout
-            </button>
+            <Link to='/checkout'>
+              <button className="w-full bg-amber-500 text-slate-900 py-2 mt-4 rounded-lg font-semibold hover:bg-amber-400 transition">
+                Checkout
+              </button>
+            </Link>
           </div>
         </div>) : ''
       }

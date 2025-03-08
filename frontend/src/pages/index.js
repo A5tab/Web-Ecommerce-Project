@@ -7,6 +7,7 @@ import Login from './Login.Page'
 import Unauthorized from './Unauthorized.Page'
 import NotFound from './NotFound.Page'
 import Product from './Product.Page'
+import Checkout from './Checkout.Page'
 export {
     Home,
     About,
@@ -17,4 +18,5 @@ export {
     Unauthorized,
     NotFound,
     Product,
+    Checkout,
 }

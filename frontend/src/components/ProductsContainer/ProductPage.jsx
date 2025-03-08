@@ -4,6 +4,7 @@ import { useProducts } from "../../context/ProductsProvider";
 import CartIcon from '../CartIcon'
 import { useDispatch } from "react-redux";
 import { addToCart } from '../../features/cart/cartSlice.js'
+import DOMPurify from 'dompurify';
 function ProductPage() {
     const { productId } = useParams();
     const dispatch = useDispatch();
@@ -58,8 +59,7 @@ function ProductPage() {
 
                 <div>
                     <h2 className="text-2xl font-semibold text-gray-700 mb-4">Details</h2>
-                    <p className="text-gray-600 text-lg mb-4">{product.description}</p>
-
+                    <div className="text-gray-600 text-lg mb-4 prose max-w-none" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product?.description) }} />
                     <h3 className="text-lg font-medium text-gray-800 mb-2">Features:</h3>
                     <ul className="list-disc list-inside text-gray-600 mb-4">
                         {featuresList.map((feature, index) => (
