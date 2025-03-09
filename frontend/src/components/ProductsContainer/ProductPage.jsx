@@ -1,14 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useProducts } from "../../context/ProductsProvider";
 import CartIcon from '../CartIcon'
 import { useDispatch } from "react-redux";
 import { addToCart } from '../../features/cart/cartSlice.js'
 import DOMPurify from 'dompurify';
+import useProductAddedQT from "../../hooks/useProductAddedQT.js";
+
 function ProductPage() {
     const { productId } = useParams();
     const dispatch = useDispatch();
     const { state: { products = [], loading } } = useProducts();
+    const getProductQT = useProductAddedQT();
+    const [addedProductQT, setAddedProductQT] = useState(0);
+
+    useEffect(() => {
+        const addedProductQuantity = getProductQT(productId);
+        setAddedProductQT(addedProductQuantity);
+    }, [getProductQT])
+
 
     if (loading) {
         return (
@@ -58,10 +68,10 @@ function ProductPage() {
                 </div>
 
                 <div>
-                    <h2 className="text-2xl font-semibold text-gray-700 mb-4">Details</h2>
+                    <h2 className="text-2xl font-semibold text-gray-800 mb-4">Details</h2>
                     <div className="text-gray-600 text-lg mb-4 prose max-w-none" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product?.description) }} />
                     <h3 className="text-lg font-medium text-gray-800 mb-2">Features:</h3>
-                    <ul className="list-disc list-inside text-gray-600 mb-4">
+                    <ul className="list-disc list-inside text-slate-600 mb-4">
                         {featuresList.map((feature, index) => (
                             <li key={index}>{feature.trim()}</li>
                         ))}
@@ -88,13 +98,15 @@ function ProductPage() {
                     }}>
                         <button
                             className="flex items-center gap-2 bg-amber-500 text-white px-5 py-2 rounded-lg shadow-md hover:bg-amber-600 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                            disabled={product.stock === 0}
+                            disabled={product.stock === 0 || addedProductQT >= product.stock}
                         >
                             {product.stock > 0 ? (
-                                <>
+                                addedProductQT < product.stock ? (
+                                    <>
                                     <span className="font-medium">Add To Cart</span>
                                     <CartIcon />
                                 </>
+                                ) : <span className="font-medium">Cart Limit!!!</span>
                             ) : (
                                 <span className="font-medium">Unavailable</span>
                             )}

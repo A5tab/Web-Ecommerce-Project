@@ -3,7 +3,7 @@ import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import CartDetails from "./components/CartDetails";
 import { useSelector } from "react-redux";
-
+import { ProductsProvider } from "./context/ProductsProvider";
 function Layout() {
     const cartTabClicked = useSelector((state) => state.cart.cartTabClicked);
     const location = useLocation();
@@ -34,7 +34,11 @@ function Layout() {
                 className={`fixed top-0 right-0 h-full w-80 bg-white shadow-lg transition-transform duration-300 ease-in-out ${cartTabClicked ? "translate-x-0" : "translate-x-full"
                     }`}
             >
-                <CartDetails />
+
+                <ProductsProvider>
+                    <CartDetails />
+                </ProductsProvider>
+
             </div>
         </div>
     );

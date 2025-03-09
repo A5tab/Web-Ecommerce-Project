@@ -1,5 +1,6 @@
 import { useProducts } from "../../context/ProductsProvider";
 import { useNavigate, Link } from "react-router-dom";
+import DOMPurify from 'dompurify'
 function CategoryContainer({ categoryName }) {
     const { state: { products } } = useProducts();
     const navigate = useNavigate();
@@ -35,13 +36,11 @@ function CategoryContainer({ categoryName }) {
                             className="w-full h-40 object-contain"
                         />
                         <div className="p-4">
-                            <h3 className="text-lg font-medium text-gray-900 truncate">
-                                {product.name}
+                            <h3 className="text-lg font-medium text-gray-800 truncate">
+                                {product.title}
                             </h3>
-                            <p className="text-sm text-gray-500 mt-2 truncate">
-                                {product.description}
-                            </p>
-                            <p className="text-lg font-bold text-green-600 mt-4">
+                            <div className="text-slate-600 mb-4 prose max-w-none truncate" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product?.description) }} />
+                            <p className="text-lg font-semibold text-slate-600 mt-4">
                                 ${product.price}
                             </p>
                         </div>

@@ -8,11 +8,9 @@ const useRefreshTokens = () => {
     const refreshTokens = async () => {
         const response = await axios.get('/user/refreshAccessToken', { withCredentials: true })
         if (response.status === 200) {
-            console.log(authStatus);
-            console.log('new access token', response.data.data.accessToken);
 
             dispatch(
-                login({ ...authStatus, accessToken: response.data.data.accessToken, userRole: response.data.data.user.role }))
+                login({ ...authStatus, userData: response.data.data.loggedInUser, accessToken: response.data.data.accessToken, userRole: response.data.data.loggedInUser.role }))
         }
         return response.data.data.accessToken;
     }
