@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import { Admin, Home, About, Contact, Login, Signup, Unauthorized, NotFound, Product, Checkout } from "./pages/index.js";
+import { Admin, Home, About, Contact, Login, Signup, Unauthorized, NotFound, Product, Checkout, PaymentFailed, PaymentSuccess } from "./pages/index.js";
 import Layout from "./Layout.jsx";
 import Protected from "./components/AuthLayout.jsx";
 import PersistLogin from "./components/PersistLogin.jsx";
@@ -84,6 +84,18 @@ const router = createBrowserRouter([
             path: "/checkout",
             element: <Protected authentication allowedRoles={['user']}>
               <Checkout />
+            </Protected>
+          },
+          {
+            path: "/payment-success",
+            element: <Protected authentication allowedRoles={['user']}>
+              <PaymentSuccess />
+            </Protected>
+          },
+          {
+            path: "/payment-failed",
+            element: <Protected authentication allowedRoles={['user']}>
+              <PaymentFailed />
             </Protected>
           },
           // ]

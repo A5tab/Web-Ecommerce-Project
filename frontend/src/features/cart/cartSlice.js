@@ -10,13 +10,13 @@ export const cartSlice = createSlice({
     },
     reducers: {
         addToCart: (state, action) => {
-            const { productId, quantity, title, price } = action.payload;
+            const { productId, paddleProductId, paddlePriceId, quantity, title, price } = action.payload;
             const indexProductId = state.cartProducts.findIndex((product) => product.id === productId);
 
             if (indexProductId >= 0) {
                 state.cartProducts[indexProductId].quantity += quantity;
             } else {
-                state.cartProducts.push({ id: productId, quantity, title, price });
+                state.cartProducts.push({ id: productId, paddleProductId, paddlePriceId, quantity, title, price });
             }
 
             localStorage.setItem("carts", JSON.stringify(state.cartProducts));

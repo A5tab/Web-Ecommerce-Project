@@ -53,6 +53,9 @@ const productSchema = new mongoose.Schema(
         },
         paddleProductId: {
             type: String,
+        },
+        paddlePriceId: {
+            type: String,
         }
     },
     {

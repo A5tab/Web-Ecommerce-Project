@@ -40,33 +40,36 @@ const createProductsInPaddle = async () => {
                             }
                         }
                     );
-
                     product.paddleProductId = productResponse.data.data.id;
                     await product.save();
                 }
 
-                const pricePayload = {
-                    product_id: product.paddleProductId,
-                    unit_price: {
-                        amount: product.price.toString(),
-                        currency_code: "USD"
-                    },
-                    description: `Pricing for ${product.title}`,
-                };
+                if (!product.paddlePriceId) {
+                    const pricePayload = {
+                        product_id: product.paddleProductId,
+                        unit_price: {
+                            amount: product.price.toString(),
+                            currency_code: "USD"
+                        },
+                        description: `Pricing for ${product.title}`,
+                    };
 
-                console.log("Creating Paddle price:", JSON.stringify(pricePayload, null, 2));
-                const priceResponse = await axios.post(
-                    "https://sandbox-api.paddle.com/prices",
-                    pricePayload,
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${process.env.PADDLE_API_KEY}`,
+                    console.log("Creating Paddle price:", JSON.stringify(pricePayload, null, 2));
+                    const priceResponse = await axios.post(
+                        "https://sandbox-api.paddle.com/prices",
+                        pricePayload,
+                        {
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${process.env.PADDLE_API_KEY}`,
+                            }
                         }
-                    }
-                );
+                    );
 
-                console.log(`Price added for product ${product.title}:`, priceResponse.data);
+                    product.paddlePriceId = priceResponse.data.data.id;
+                    await product.save();
+                }
+
             } catch (error) {
                 console.error(`Error syncing product "${product.title}":`, error.response?.data || error.message);
             }

@@ -3,7 +3,7 @@ import { cartTabHandler, changeQuantity } from '../features/cart/cartSlice';
 import useProductAddedQT from '../hooks/useProductAddedQT';
 import { useProducts } from '../context/ProductsProvider';
 import { useMemo, useCallback } from 'react';
-
+import { Link } from 'react-router-dom';
 function CartDetails() {
   const dispatch = useDispatch();
   const cartTabClicked = useSelector(state => state.cart.cartTabClicked);
@@ -18,7 +18,7 @@ function CartDetails() {
     }, {});
   }, [products]);
 
-  const totalPrice = useMemo(() => 
+  const totalPrice = useMemo(() =>
     cartProducts.reduce((accum, cproduct) => accum + (cproduct.quantity * cproduct.price), 0),
     [cartProducts]
   );
@@ -85,9 +85,16 @@ function CartDetails() {
       ) : <p className="text-center text-slate-400 mt-4">Cart is Empty</p>}
 
       {cartProducts.length ? (
-        <div className="border-t border-slate-700 pt-3 mt-3 flex justify-between text-lg font-semibold">
-          <span className="text-slate-300">Total</span>
-          <span className="text-amber-400">${totalPrice}</span>
+        <div className="border-t border-slate-700 pt-4 mt-4">
+          <div className="flex justify-between items-center text-lg font-semibold">
+            <span className="text-slate-300">Total</span>
+            <span className="text-amber-400">${totalPrice}</span>
+          </div>
+          <Link to="/checkout">
+            <button className="w-full mt-4 py-2 bg-amber-500 text-slate-900 rounded-lg font-semibold hover:bg-amber-400 transition duration-200" onClick={() => dispatch(cartTabHandler(cartTabClicked))}>
+              Proceed to Checkout
+            </button>
+          </Link>
         </div>
       ) : null}
     </div>

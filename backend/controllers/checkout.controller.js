@@ -3,27 +3,32 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 
-const createCheckout = asyncHandler(async (req, res, next) => {
-    const { cartProducts, customerEmail } = req.body;
+const createCheckout = asyncHandler(async (req, res) => {
+    const { cartProducts } = req.body;
+    const { _id: customerId } = req.user;
 
-    if (!cartProducts || !customerEmail) {
-        throw new ApiError(400, "Product ID and Customer Email are required");
+    if (!cartProducts) {
+        throw new ApiError(400, "Cart products and customer email are required");
     }
 
-    
-
     const payload = {
-        customer_email: customerEmail,
-        product_id: productId,
-        success_url: "http://localhost:5173/payment-success",
-        cancel_url: "http://localhost:5173/payment-failed",
+        collection_mode: "automatic",  // Ensures Paddle collects payment
+        customer_id: customerId,
+        items: cartProducts.map(product => ({
+            price_id: product.paddlePriceId,
+            quantity: product.quantity || 1,
+        })),
+        currency_code: 'USD',
+        checkout: {
+            url: 'http://localhost:5173/checkoutSuccess'
+        }
     };
 
     try {
         console.log("Sending Checkout Payload:", JSON.stringify(payload, null, 2));
 
-        const response = await axios.post(
-            "https://sandbox-api.paddle.com/checkouts",
+        const { data } = await axios.post(
+            "https://sandbox-api.paddle.com/transactions",
             payload,
             {
                 headers: {
@@ -33,14 +38,13 @@ const createCheckout = asyncHandler(async (req, res, next) => {
             }
         );
 
-        if (!response.data || !response.data.data || !response.data.data.url) {
+        if (!data?.data?.url) {
             throw new ApiError(500, "Invalid response from Paddle API");
         }
 
-        return res.status(200).json(new ApiResponse(200, { checkoutUrl: response.data.data.url }, "Checkout created successfully"));
+        res.status(200).json(new ApiResponse(200, { checkoutUrl: data.data.url }, "Checkout created successfully"));
     } catch (error) {
-        console.error("Paddle API Error:", error.response?.data || error.message);
-        throw new ApiError(error.response?.status || 500, error.response?.data?.error?.detail || "Failed to create checkout session");
+        throw new ApiError(500, "Failed to create checkout");
     }
 });
 

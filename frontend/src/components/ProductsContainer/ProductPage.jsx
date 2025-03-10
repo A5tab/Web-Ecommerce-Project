@@ -93,7 +93,7 @@ function ProductPage() {
 
                     <div onClick={() => {
                         dispatch(addToCart({
-                            productId, quantity: 1, title: product?.title, price: product?.price
+                            productId, paddleProductId: product?.paddleProductId, paddlePriceId: product?.paddlePriceId, quantity: 1, title: product?.title, price: product?.price
                         }))
                     }}>
                         <button
@@ -103,9 +103,9 @@ function ProductPage() {
                             {product.stock > 0 ? (
                                 addedProductQT < product.stock ? (
                                     <>
-                                    <span className="font-medium">Add To Cart</span>
-                                    <CartIcon />
-                                </>
+                                        <span className="font-medium">Add To Cart</span>
+                                        <CartIcon />
+                                    </>
                                 ) : <span className="font-medium">Cart Limit!!!</span>
                             ) : (
                                 <span className="font-medium">Unavailable</span>

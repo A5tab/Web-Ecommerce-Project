@@ -8,6 +8,8 @@ import Unauthorized from './Unauthorized.Page'
 import NotFound from './NotFound.Page'
 import Product from './Product.Page'
 import Checkout from './Checkout.Page'
+import PaymentFailed from './PaymentFailed.Page'
+import PaymentSuccess from './PaymentSuccess.Page'
 export {
     Home,
     About,
@@ -19,4 +21,6 @@ export {
     NotFound,
     Product,
     Checkout,
+    PaymentFailed,
+    PaymentSuccess
 }

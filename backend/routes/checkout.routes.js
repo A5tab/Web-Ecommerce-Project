@@ -4,7 +4,7 @@ import { createCheckout } from "../controllers/checkout.controller.js"
 
 const checkoutRouter = Router();
 
-checkoutRouter.route('create-checkout').post(authMiddleware('user', createCheckout));
+checkoutRouter.route('/create-checkout').post(authMiddleware('user'), createCheckout);
 
 
 export default checkoutRouter;
