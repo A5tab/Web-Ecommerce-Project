@@ -1,11 +1,10 @@
-import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import useCheckout from '../hooks/useCheckout';
 function CheckoutPage() {
     const cartProducts = useSelector(state => state.cart.cartProducts) || [];
     const totalAmount = cartProducts.reduce((sum, product) => sum + (product.price * product.quantity), 0);
     const handleCheckout = useCheckout();
-
+    
     return (
         <div className="bg-[#0D1117] min-h-screen p-6 text-white">
             <div className="max-w-4xl mx-auto bg-[#161B22] p-6 rounded-lg shadow-lg border border-[#2c7bd4]">

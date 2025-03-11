@@ -12,14 +12,11 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }))
 import userRouter from "./routes/user.routes.js"
 import productRouter from "./routes/product.routes.js"
 import configRouter from "./routes/config.routes.js"
-import checkoutRouter from "./routes/checkout.routes.js"
 import { globalErrorHandler } from "./middlewares/globalErrorHandler.middleware.js"
 // routes declaration
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/product", productRouter)
 app.use("/api/v1/config", configRouter)
-app.use("/api/v1/checkout", checkoutRouter)
-
 
 app.use(globalErrorHandler);
 export { app }
