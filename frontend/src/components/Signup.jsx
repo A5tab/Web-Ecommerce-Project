@@ -1,7 +1,7 @@
 import { Input, FileInput } from './formscomponents/index'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useForm, Controller } from 'react-hook-form'
-import axios from 'axios';
+import axios from '../api/axios';
 import { useDispatch } from 'react-redux';
 import { login } from '../features/auth/authSlice';
 import { useState } from 'react';
@@ -23,7 +23,7 @@ function SignupPage() {
     data.avatar = data.avatar ? data.avatar[0] : '';
 
     try {
-      const response = await axios.post('http://localhost:3000/api/v1/user/signup', data, {
+      const response = await axios.post('/user/signup', data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -38,7 +38,7 @@ function SignupPage() {
           userRole: userRole,
           accessToken: accessToken
         }));
-        navigate(from, { replace: true})
+        navigate(from, { replace: true })
       }
     } catch (err) {
       if (err.response.data) {
