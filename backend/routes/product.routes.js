@@ -3,12 +3,14 @@ import { multerUpload } from "../middlewares/multer.middleware.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 import {
     getAllProducts, getSingleProduct,
-    addProduct, updateProduct, deleteProduct
+    addProduct, updateProduct, deleteProduct,
+    searchByTitle
 } from "../controllers/product.controller.js";
 
 const productRouter = Router();
 productRouter.route('/get-all-products').get(getAllProducts)
 productRouter.route('/get-single-product/:id').get(getSingleProduct)
+productRouter.route('/search-by-title/:searchQuery').get(searchByTitle)
 productRouter.route('/add-product').post(authMiddleware('admin'), multerUpload.fields([
     { name: 'mainImage', maxCount: 1 },
     { name: 'images', maxCount: 5 },

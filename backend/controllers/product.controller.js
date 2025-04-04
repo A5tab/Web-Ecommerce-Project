@@ -139,6 +139,21 @@ const deleteProduct = asyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, deletedProduct, "Product deleted successfully"));
 });
 
+const searchByTitle = asyncHandler(async (req, res) => {
+    const { searchQuery } = req.params;
+    if (!searchQuery) {
+        throw new ApiError(400, 'No search query was entered');
+    }
+    console.log(searchQuery);
+
+    const searchedProducts = await Product.findOne({ title: { $regex: searchQuery, $options: 'i' } })
+    .select('_id title mainImage');
+    if (!searchedProducts) {
+        throw new ApiError(404, 'Product Not Found');
+    }
+
+    res.status(200).json(new ApiResponse(200, searchedProducts, "Products founded successfully"));
+})
 
 
 export {
@@ -147,4 +162,5 @@ export {
     addProduct,
     updateProduct,
     deleteProduct,
+    searchByTitle
 }
