@@ -10,6 +10,11 @@ import Product from './Product.Page'
 import Checkout from './Checkout.Page'
 import PaymentFailed from './PaymentFailed.Page'
 import PaymentSuccess from './PaymentSuccess.Page'
+import Services from './Services.Page'
+import FAQ from './FAQ.Page'
+import Privacy from './Privacy-Policy.Page'
+import TermsConditions from './TermsConditions.Page'
+import Blog from './Blog.Page'
 export {
     Home,
     About,
@@ -22,5 +27,10 @@ export {
     Product,
     Checkout,
     PaymentFailed,
-    PaymentSuccess
+    PaymentSuccess,
+    Services,
+    FAQ,
+    Privacy,
+    TermsConditions,
+    Blog
 }

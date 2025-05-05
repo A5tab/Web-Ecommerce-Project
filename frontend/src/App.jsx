@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import { Admin, Home, About, Contact, Login, Signup, Unauthorized, NotFound, Product, Checkout, PaymentFailed, PaymentSuccess } from "./pages/index.js";
+import { Admin, Home, Login, Signup, Unauthorized, NotFound, Product, Checkout, PaymentFailed, PaymentSuccess, About, Contact, Blog, Services, TermsConditions, FAQ, Privacy } from "./pages/index.js";
 import Layout from "./Layout.jsx";
 import Protected from "./components/AuthLayout.jsx";
 import PersistLogin from "./components/PersistLogin.jsx";
@@ -53,6 +53,26 @@ const router = createBrowserRouter([
               {
                 path: "/contact",
                 element: <Contact />,
+              },
+              {
+                path: "/faq",
+                element: <FAQ />,
+              },
+              {
+                path: "/terms-conditions",
+                element: <TermsConditions />,
+              },
+              {
+                path: "/blog",
+                element: <Blog />,
+              },
+              {
+                path: "/services",
+                element: <Services />,
+              },
+              {
+                path: "/privacy-policy",
+                element: <Privacy />,
               },
               {
                 path: "/product/:productId",

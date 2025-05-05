@@ -21,6 +21,9 @@ function ProductForm({ handleFormModel, product }) {
                 `/product/add-product`
             const method = product ? "put" : "post"
 
+            console.log(typeof data.features);
+            
+            data.features = data.features.trim().split(",");
             const response = await axiosPrivate(
                 {
                     method,
@@ -35,12 +38,10 @@ function ProductForm({ handleFormModel, product }) {
                 toast(response.data.message);
                 dispatch({ type: `${product ? "UPDATE" : "ADD"}_PRODUCT`, payload: response.data.data });
             }
+            handleFormModel(false);
 
         } catch (error) {
             toast.error(`Error while ${product ? "updating" : "adding"} product: ${error.message}`);
-        }
-        finally {
-            handleFormModel(false);
         }
     };
     const {
@@ -58,7 +59,7 @@ function ProductForm({ handleFormModel, product }) {
             description: product?.description || "",
             price: product?.price || 0,
             category: product?.category || "",
-            features: product?.features || "",
+            features: product?.features || [],
             mainImage: product?.mainImage || [],
             images: product?.images || [],
             stock: product?.stock || 0,
@@ -163,7 +164,7 @@ function ProductForm({ handleFormModel, product }) {
                                     errorMessage={formField.errorMessage}
                                     name={formField.name}
                                     pattern={formField.pattern}
-                                    className="w-full mt-2 p-2 border rounded-md"
+                                    className="w-full mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
                                     {...register(formField.name, {
                                         required: formField.required && `${formField.label} is required`,
                                         pattern: formField.pattern

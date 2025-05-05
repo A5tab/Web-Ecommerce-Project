@@ -1,7 +1,7 @@
 import React, { useId } from 'react'
 
-const Input = React.forwardRef(function Input({ componentId, label, type = "text", className = "", multiple = false,errorMessage, ...props }, ref) {
-    const id = useId()
+const Input = React.forwardRef(function Input({ name = '', componentId, label, type = "text", className = "", multiple = false, errorMessage, ...props }, ref) {
+    const id = name;
     return (
 
         <div className='w-full' id={componentId}>
@@ -11,10 +11,12 @@ const Input = React.forwardRef(function Input({ componentId, label, type = "text
                 {label}
             </label>
             }
-            <input type={type} multiple={multiple} className={`px-3 py-2 rounded-lg outline-none focus:bg-gray-50 duration-200 border border-gray-200 w-full ${className}`} {...props} ref={ref} id={id} />
+            <input ref={ref}
+                name={name} type={type} multiple={multiple} className={`px-3 py-2 rounded-lg outline-none focus:bg-gray-50 duration-200 border border-gray-200 w-full ${className}`} {...props} id={id} />
         </div>
 
     )
 })
 
 export default Input
+

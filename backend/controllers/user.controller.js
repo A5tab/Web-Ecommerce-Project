@@ -116,8 +116,9 @@ const logoutUser = asyncHandler(async (req, res) => {
 
     // )
 
+
     const refreshToken = req?.cookies?.refreshToken;
-    
+
     if (!refreshToken) throw new ApiError(400, 'No refresh token provided');
     const user = await User.findOne({ refreshToken });
 
@@ -125,7 +126,9 @@ const logoutUser = asyncHandler(async (req, res) => {
         throw new ApiError(403, 'Invalid token');
     }
 
-    await User.findOneAndUpdate({ refreshToken }, { $unset: { refreshToken: 1 } }, { new: true });
+    const updatedUser = await User.findOneAndUpdate({ refreshToken }, { $unset: { refreshToken: 1 } }, { new: true });
+    console.log(updatedUser);
+
 
     return res.status(200).clearCookie('refreshToken', refreshTokenOptions).json({ message: "Logged out successfully" });
 })

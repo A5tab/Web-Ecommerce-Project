@@ -1,0 +1,21 @@
+
+
+function Blog() {
+    return (
+        <div className="min-h-screen bg-gradient-to-b from-indigo-950 to-gray-900 text-gray-200 py-20 px-6 sm:px-10 lg:px-20">
+            <div className="max-w-5xl mx-auto bg-indigo-900/40 border border-indigo-700 rounded-2xl p-10 shadow-2xl">
+                <h1 className="text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-purple-400 to-indigo-500 mb-10">
+                    Our Blog
+                </h1>
+                <div className="space-y-6 text-indigo-100 text-lg">
+                    <p> <strong>Latest Trends:</strong> Stay updated with what’s new in tech and fashion.</p>
+                    <p> <strong>Product Updates:</strong> Announcements and improvements to your favorite items.</p>
+                    <p> <strong>Shopping Tips:</strong> Guides to help you shop smarter and save more.</p>
+                    <p> <strong>Behind the Scenes:</strong> Learn more about our journey, team, and values.</p>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Blog;

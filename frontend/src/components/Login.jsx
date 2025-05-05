@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input } from "../components/formscomponents/index"
-import { Link, replace, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../features/auth/authSlice.js'
 import axios from '../api/axios.js';
@@ -10,7 +10,7 @@ function LoginPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { userRole, isLoggedIn } = useSelector((state) => state.auth)
-    const { register, handleSubmit, formState: { errors, isSubmitting }, clearErrors } = useForm({ mode: "onBlur" });
+    const { register, handleSubmit, formState: { errors, isSubmitting, isValid }, clearErrors } = useForm({ mode: "onBlur" });
     const [apiError, setApiError] = useState('')
     const location = useLocation();
     const from = location.state?.from?.pathname || '/';
@@ -54,16 +54,32 @@ function LoginPage() {
         }
     }
 
-    return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-900">
-            <div className="bg-gray-800 text-white p-8 rounded-lg shadow-lg w-full max-w-md">
-                <h2 className="text-2xl font-semibold text-center mb-6">Login to Your Account</h2>
-                {apiError && <p className='text-red-400 mt-1 text-center font-bold text-2xl'>{apiError}</p>}
+    const onKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            const activeElement = document.activeElement;
+            if (activeElement && typeof activeElement.blur === 'function') {
+                activeElement.blur(); // to register feilds and get them validated
+                activeElement.focus(); // to make focused the field to make corrections in that field if needed
+                // we could also add this feature if field is last then trigger submit otherwise move to next field.
+            }
+        }
+    }
 
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    return (
+        <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-indigo-950 to-gray-900 px-4">
+            <div className="bg-indigo-900/40 text-gray-200 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-indigo-700">
+                <h2 className="text-3xl font-extrabold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-purple-400 to-indigo-500">
+                    Login to Your Account
+                </h2>
+
+                {apiError && <p className="text-red-400 mt-1 text-center font-bold text-xl">{apiError}</p>}
+
+                <form noValidate onSubmit={handleSubmit(onSubmit)} onKeyDown={onKeyDown} className="space-y-6">
+
                     <div>
                         <Input
                             type="email"
+                            name="email"
                             placeholder="Enter your email"
                             label="Enter your email"
                             {...register('email', {
@@ -74,12 +90,10 @@ function LoginPage() {
                                 }
                             })}
                             onChange={() => errors.email && clearErrors('email')}
-                            className="text-black w-full p-2 border border-gray-600 rounded bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                        </Input>
+                            className="w-full px-4 py-3 bg-white text-gray-800 rounded-lg border border-indigo-700 focus:outline-none focus:ring-2 focus:ring-yellow-400 placeholder:text-indigo-400 transition"
+                        />
                         {errors.email && <p className="text-red-400 text-sm mt-1">{errors.email.message}</p>}
                     </div>
-
 
                     <div>
                         <Input
@@ -94,24 +108,31 @@ function LoginPage() {
                                 }
                             })}
                             onChange={() => errors.password && clearErrors('password')}
-                            className="text-black w-full p-2 border border-gray-600 rounded bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                        </Input>
+                            className="w-full px-4 py-3 bg-white text-gray-800 rounded-lg border border-indigo-700 focus:outline-none focus:ring-2 focus:ring-yellow-400 placeholder:text-indigo-400 transition"
+                        />
                         {errors.password && <p className="text-red-400 text-sm mt-1">{errors.password.message}</p>}
                     </div>
+
                     <button
                         type="submit"
-                        className="w-full bg-blue-600 hover:bg-blue-500 transition duration-200 text-white py-2 rounded font-semibold"
+                        className="w-full py-3 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-indigo-900 font-bold rounded-lg shadow-md transition-all duration-300"
                         disabled={isSubmitting}
                     >
                         {isSubmitting ? "Submitting..." : "Login"}
                     </button>
                 </form>
 
-                <Link to="/signup"><p className="font-semibold text-center mb-6 text-red-700 mt-3">Needs to create a new account?</p></Link>
+                <Link to="/signup">
+                    <p className="font-semibold text-center text-yellow-400 hover:text-yellow-300 mt-6 underline transition">
+                        Need to create a new account?
+                    </p>
+                </Link>
             </div>
         </div>
+
     );
 }
 
 export default LoginPage;
+
+

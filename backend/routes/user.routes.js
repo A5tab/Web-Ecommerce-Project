@@ -11,6 +11,6 @@ userRouter.route("/refreshAccessToken").get(refreshAccessToken)
 
 
 // secure routes
-userRouter.route("/logout").post(logoutUser);
+userRouter.route("/logout").delete(authMiddleware(), logoutUser);
 
 export default userRouter;

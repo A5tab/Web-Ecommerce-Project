@@ -29,7 +29,7 @@ function SignupPage() {
         }
       })
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         const user = response.data.data.user;
         const userRole = user?.role;
         const accessToken = response.data.data.accessToken;
@@ -49,13 +49,28 @@ function SignupPage() {
       }
     }
   }
-  return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-900">
-      <div className="bg-gray-800 text-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-semibold text-center mb-6">Create account with us!!!</h2>
 
-        {apiError && <p className='text-red-400 mt-1 text-center font-bold text-2xl'>{apiError}</p>}
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+  const onKeyDown = (e) => {
+    if (e.key === 'Enter') {
+        const activeElement = document.activeElement;
+        if (activeElement && typeof activeElement.blur === 'function') {
+            activeElement.blur(); // to register feilds and get them validated
+            activeElement.focus(); // to make focused the field to make corrections in that field if needed
+            // we could also add this feature if field is last then trigger submit otherwise move to next field.
+        }
+    }
+}
+  return (
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-indigo-950 to-gray-900 px-4">
+      <div className="bg-indigo-900/40 text-gray-200 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-indigo-700">
+        <h2 className="text-3xl font-extrabold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-purple-400 to-indigo-500">
+          Create account with us!!!
+        </h2>
+
+        {apiError && <p className='text-red-400 mt-1 text-center font-bold text-xl'>{apiError}</p>}
+
+        <form onSubmit={handleSubmit(onSubmit)} onKeyDown={onKeyDown} className="space-y-6">
+          {/* Username */}
           <div>
             <Input
               type="text"
@@ -69,12 +84,12 @@ function SignupPage() {
                 }
               })}
               onChange={() => errors.username && clearErrors('username')}
-              className="w-full p-2 border border-gray-600 rounded bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-            >
-            </Input>
+              className="w-full px-4 py-3 bg-white text-gray-800 rounded-lg border border-indigo-700 focus:outline-none focus:ring-2 focus:ring-yellow-400 placeholder:text-indigo-400 transition"
+            />
             {errors.username && <p className="text-red-400 text-sm mt-1">{errors.username.message}</p>}
           </div>
 
+          {/* Email */}
           <div>
             <Input
               type="email"
@@ -88,13 +103,12 @@ function SignupPage() {
                 }
               })}
               onChange={() => errors.email && clearErrors('email')}
-              className="w-full p-2 border border-gray-600 rounded bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-            >
-            </Input>
+              className="w-full px-4 py-3 bg-white text-gray-800 rounded-lg border border-indigo-700 focus:outline-none focus:ring-2 focus:ring-yellow-400 placeholder:text-indigo-400 transition"
+            />
             {errors.email && <p className="text-red-400 text-sm mt-1">{errors.email.message}</p>}
           </div>
 
-
+          {/* Password */}
           <div>
             <Input
               label="Enter password"
@@ -108,44 +122,47 @@ function SignupPage() {
                 }
               })}
               onChange={() => errors.password && clearErrors('password')}
-              className="w-full p-2 border border-gray-600 rounded bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-            >
-            </Input>
+              className="w-full px-4 py-3 bg-white text-gray-800 rounded-lg border border-indigo-700 focus:outline-none focus:ring-2 focus:ring-yellow-400 placeholder:text-indigo-400 transition"
+            />
             {errors.password && <p className="text-red-400 text-sm mt-1">{errors.password.message}</p>}
           </div>
 
-
+          {/* Avatar Upload */}
           <div>
             <Controller
               control={control}
               name="avatar"
-              render={({ field: { onChange, value = [] } }) => (  // setting value = [] save from extra renders due to react hook form controller making sure array refernce as stable or same...
+              render={({ field: { onChange, value = [] } }) => (
                 <FileInput
                   componentId={'avatarUploader'}
-                  label='Upload Avatar Image(optional)'
+                  label='Upload Avatar Image (optional)'
                   required={false}
-                  onChange={onChange} // send value to hook form
+                  onChange={onChange}
                   value={value}
-                  className="w-full p-2 border border-gray-600 rounded bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+                  className="w-full px-4 py-3 bg-white text-gray-800 rounded-lg border border-indigo-700 focus:outline-none focus:ring-2 focus:ring-yellow-400 placeholder:text-indigo-400 transition"
                 />
               )}
             />
           </div>
 
-
+          {/* Submit */}
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-500 transition duration-200 text-white py-2 rounded font-semibold"
+            className="w-full py-3 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-indigo-900 font-bold rounded-lg shadow-md transition-all duration-300"
             disabled={isSubmitting}
           >
             {isSubmitting ? "Submitting..." : "Submit"}
           </button>
         </form>
 
-        <Link to="/login"><p className="font-semibold text-center mb-6 text-red-700 mt-3">Already have an account?Login here</p></Link>
+        <Link to="/login">
+          <p className="font-semibold text-center text-yellow-400 hover:text-yellow-300 mt-6 underline transition">
+            Already have an account? Login here
+          </p>
+        </Link>
       </div>
-
     </div>
+
   )
 }
 
