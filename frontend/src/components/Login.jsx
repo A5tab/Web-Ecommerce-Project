@@ -42,6 +42,9 @@ function LoginPage() {
                     accessToken: accessToken
                 }));
 
+                if (userRole === 'admin') {
+                    navigate('/admin', { replace: true })
+                }
                 navigate(from, { replace: true });
             }
         } catch (err) {
