@@ -118,7 +118,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 
     const refreshToken = req?.cookies?.refreshToken;
-
+    
     if (!refreshToken) throw new ApiError(400, 'No refresh token provided');
     const user = await User.findOne({ refreshToken });
 
