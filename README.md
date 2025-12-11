@@ -4,7 +4,7 @@ Excited to share my Ecommerce WebApp I built to learn and enhance my development
 
 Here is the live site:
 
- https://lnkd.in/dtZ-nh5R
+ https://web-ecommerce-project.vercel.app/
 
 
 
