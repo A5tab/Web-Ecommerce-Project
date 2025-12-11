@@ -2,10 +2,9 @@ Excited to share my Ecommerce WebApp I built to learn and enhance my development
 
 
 
-Here is the live site:
+Here is the live site demo:
 
- https://web-ecommerce-project.vercel.app/
-
+ https://lnkd.in/dtZ-nh5R
 
 
 Check my Github Repo for this project:
