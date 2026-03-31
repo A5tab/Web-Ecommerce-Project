@@ -155,7 +155,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
         // we could also update reftoken along with when access token is refreshed for long login states
 
         // user.refreshToken = newRefreshToken;
-        await user.save({ validateBeforeSave: false });
+        // await user.save({ validateBeforeSave: false });
         const loggedInUser = await User.findById(user._id).select('-password -refreshToken');
         return res.status(200)
             // .cookie("refreshToken", newRefreshToken, refreshTokenOptions)
